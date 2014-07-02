@@ -77,8 +77,10 @@ $(document).ready(function(){
 
 
 function show() {
-	AppInterface.toast('Hello');
+	setTimeout(function(){		
+	//AppInterface.toast('Hello');
 	AppInterface2.toast('Hello');
+	}, 3000);
 }
 
 
