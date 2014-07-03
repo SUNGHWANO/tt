@@ -15,6 +15,7 @@ import android.os.Vibrator;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.webkit.JsResult;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
@@ -34,6 +35,7 @@ public class MainActivity extends ActionBarActivity {
 	private final Handler handler = new Handler();
 	private WebView webView;
 	private TextView textView;
+	private NotificationManager notimng;
 	Button buttonForCall = null;
 	Button buttonForClear = null;
 	
@@ -58,7 +60,7 @@ public class MainActivity extends ActionBarActivity {
 				Log.d(TAG, "onJsAlert(" + view + ", " + url + ", " + message + ", " + result + ")");
 					
 				
-				 NotificationManager notimng = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+				 notimng = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 		   		PendingIntent notiP = PendingIntent.getActivity(	getApplicationContext(), 0, 
 		   				new Intent(getApplicationContext(), MainActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
 
@@ -88,18 +90,19 @@ public class MainActivity extends ActionBarActivity {
 		    	.setPositiveButton("확인", new DialogInterface.OnClickListener() {	
 		  			@Override
 		  			public void onClick(DialogInterface dialog, int which) {
-		  				Toast.makeText(MainActivity.this, "ㅇㅇ", Toast.LENGTH_LONG).show();
+		  				//Toast.makeText(MainActivity.this, "ㅇㅇ", Toast.LENGTH_LONG).show();
 		  				//webView.loadUrl("javascript:alert('dd')");
-		  				webView.loadUrl("javascript:callJS('확```````````')");
+		  				//webView.loadUrl("javascript:callJS('확```````````')");
+		  				webView.loadUrl("javascript:yes()");
 		  				
 		  			}
 		  		}).setNegativeButton("취소", new DialogInterface.OnClickListener() {
 		      @Override
 		      public void onClick(DialogInterface dialog, int which) {
-		       	Toast.makeText(MainActivity.this, "ㄴㄴ", Toast.LENGTH_LONG).show();
+		       	//Toast.makeText(MainActivity.this, "ㄴㄴ", Toast.LENGTH_LONG).show();
 		      	
-		      	webView.loadUrl("javascript:callJS('취````````````````')");
-		      	
+		      		//webView.loadUrl("javascript:callJS('취````````````````')");
+		      		webView.loadUrl("javascript:no()");
 		        }
 		      }).create();
 		    	alert.show();
@@ -117,6 +120,36 @@ public class MainActivity extends ActionBarActivity {
 
 	
 }
-	
+	public boolean onKeyDown(int keyCode, KeyEvent event){
+		
+		
+		
+    switch(keyCode){
+    case KeyEvent.KEYCODE_BACK:
+     String alertTitle = getResources().getString(R.string.app_name);
+     String buttonMessage = getResources().getString(R.string.action_settings);
+     String buttonYes = getResources().getString(R.string.action_settings);
+     String buttonNo = getResources().getString(R.string.action_settings);
+       
+     new AlertDialog.Builder(MainActivity.this)
+     .setIcon(R.drawable.ic_launcher)
+     .setTitle("제목")
+     .setMessage("내용")
+     .setPositiveButton(buttonYes, new DialogInterface.OnClickListener() {
+     
+      @Override
+      public void onClick(DialogInterface dialog, int which) {
+       // TODO Auto-generated method stub
+      	 notimng.cancel(0);
+       moveTaskToBack(true);
+       finish();
+       android.os.Process.killProcess(android.os.Process.myPid());
+      }
+     })
+     .setNegativeButton(buttonNo, null)
+     .show();
+    }
+   return true;
+   }
 
 }

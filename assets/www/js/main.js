@@ -22,9 +22,6 @@ var actionName, className, startTime, endTime, resultWhile, lastRow;
 var db = window.openDatabase("Database", "1.0", "LogDB", 2 * 1024 * 1024);
 
 $(document).ready(function(){
-	
-	
-	
 	startIcon = $('#start').html();
 	
 	loadMainIcon();
@@ -377,6 +374,19 @@ function onConfirm(buttonIndex) {
     	window.location.reload();
     }
 }
+
+function yes() {
+	window.location.reload();
+}
+
+function no() {
+	second = 0;
+	minute = defaultValue;
+	end = 0;    	
+	clearTimeout(timeClock);
+  timeclock();
+}
+
 
 // Show a custom confirmation dialog
 //
