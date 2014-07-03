@@ -22,6 +22,9 @@ var actionName, className, startTime, endTime, resultWhile, lastRow;
 var db = window.openDatabase("Database", "1.0", "LogDB", 2 * 1024 * 1024);
 
 $(document).ready(function(){
+	
+	
+	
 	startIcon = $('#start').html();
 	
 	loadMainIcon();
@@ -74,12 +77,19 @@ $(document).ready(function(){
 	
 	
 });
+function callJS(arg) {
+	document.getElementById("replaceme").innerHTML = arg;
+}
 
+function clear() {
+	document.getElementById("replaceme").innerHTML = "";
+}
 
 function show() {
 	setTimeout(function(){		
-	//AppInterface.toast('Hello');
-	AppInterface2.toast('Hello');
+		window.alert();
+		AppInterface2.toast();
+		document.getElementById("aaa").innerHTML = "dd";
 	}, 3000);
 }
 
@@ -300,9 +310,8 @@ function timeclock(){
   
   
   if ((minute < 0) && (end==0)) {
-	 AppInterface.toast('Hello');
-    AppInterface2.toast('Hello');
-	 showConfirm();
+	 window.alert();
+	 //showConfirm();
 	 end = 1;
   }
   
