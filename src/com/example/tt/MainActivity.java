@@ -16,8 +16,10 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.Window;
 import android.webkit.JsResult;
 import android.webkit.WebChromeClient;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
@@ -46,46 +48,59 @@ public class MainActivity extends ActionBarActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
+		startActivity(new Intent(this,Splash.class));
+		
+		
 		webView = new WebView(this);
 		webView.getSettings().setJavaScriptEnabled(true);
-		//webView.addJavascriptInterface(new AndroidBridge(), "HybridApp");
-		webView.setWebChromeClient(new WebChromeClient());
 		webView.setWebViewClient(new WebViewClient());
+		webView.setWebChromeClient(new WebChromeClient());
 		
+		WebSettings settings = webView.getSettings();  
+    settings.setJavaScriptEnabled(true);
+    settings.setDomStorageEnabled(true);
+    settings.setDatabaseEnabled(true);
+    settings.setAppCacheEnabled(false);
+    
+		//webView.addJavascriptInterface(new AndroidBridge(), "HybridApp");
 		
-		webView.setWebChromeClient(new WebChromeClient(){
+    
+	
+		 webView.setWebChromeClient(new WebChromeClient(){
 			
 			@Override
 			public boolean onJsAlert(final WebView view, final String url, final String message, JsResult result) {
 				Log.d(TAG, "onJsAlert(" + view + ", " + url + ", " + message + ", " + result + ")");
-					
+				
+				//startService(new Intent("com.example.tt"));
 				
 				 notimng = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 		   		PendingIntent notiP = PendingIntent.getActivity(	getApplicationContext(), 0, 
 		   				new Intent(getApplicationContext(), MainActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
 
 		   		Notification notice = new NotificationCompat.Builder(getApplicationContext())
-		   				.setContentTitle("제목~~~~~~")
-		   				.setContentText("내용~~~~~~")
+		   				.setContentTitle("SemiLog")
+		   				.setContentText("알림확인")
 		   				.setSmallIcon(R.drawable.ic_launcher)
-		   				.setTicker("하이~~~~~~~~").setAutoCancel(true)
+		   				.setTicker("알림").setAutoCancel(true)
 		   				.setContentIntent(notiP).build();
 
 		   		notimng.notify(0, notice);
 		      
-		  		/*
+		   		/*
 		    	if ( notimng != null ) {
 		  			notimng.cancel(0);
 		  		}
 		    	*/
-		      
 		   		 Vibrator vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 		      vibe.vibrate(1000);
+		    	
+		      
 				
 		      AlertDialog alert = new AlertDialog.Builder(MainActivity.this)
 		    	.setIcon(R.drawable.ic_launcher)
-		    	.setTitle("제목")
-		    	.setMessage("내용")
+		    	.setTitle("알림")
+		    	.setMessage("알림을 연장하시겠습니까?")
 		    	.setCancelable(false)
 		    	.setPositiveButton("확인", new DialogInterface.OnClickListener() {	
 		  			@Override
@@ -94,7 +109,7 @@ public class MainActivity extends ActionBarActivity {
 		  				//webView.loadUrl("javascript:alert('dd')");
 		  				//webView.loadUrl("javascript:callJS('확```````````')");
 		  				notimng.cancel(0);
-		  				webView.loadUrl("javascript:yes()");
+		  				webView.loadUrl("javascript:no()");
 		  				
 		  			}
 		  		}).setNegativeButton("취소", new DialogInterface.OnClickListener() {
@@ -104,7 +119,7 @@ public class MainActivity extends ActionBarActivity {
 		      	
 		      		//webView.loadUrl("javascript:callJS('취````````````````')");
 		       	notimng.cancel(0);
-		      		webView.loadUrl("javascript:no()");
+		      		webView.loadUrl("javascript:yes()");
 		        }
 		      }).create();
 		    	alert.show();
@@ -117,8 +132,8 @@ public class MainActivity extends ActionBarActivity {
       });
 		
 		webView.loadUrl("file:///android_asset/www/index.html");
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(webView);
-	
 
 	
 }
@@ -152,7 +167,7 @@ public class MainActivity extends ActionBarActivity {
      .show();
     }
    return true;
-   
+  
    }
 
 }

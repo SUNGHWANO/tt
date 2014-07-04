@@ -22,8 +22,11 @@ var actionName, className, startTime, endTime, resultWhile, lastRow;
 var db = window.openDatabase("Database", "1.0", "LogDB", 2 * 1024 * 1024);
 
 $(document).ready(function(){
-	startIcon = $('#start').html();
 	
+	//$("#form").css("display", "none");
+	
+	startIcon = $('#start').html();
+		
 	loadMainIcon();
 	
 	dragdrop_doing();
@@ -41,7 +44,7 @@ $(document).ready(function(){
 	
 	$("#resultLink").click(function(){
 		db.transaction(function(tx){
-			tx.executeSql('SELECT * FROM ACTION',[],function(tx,res){
+			tx.executeSql('SELECT * FROM LOG',[],function(tx,res){
 				console.log(res.rows);
 				if(res.rows.length == 0){
 					alert("log 한적 없잖아!");
@@ -61,7 +64,7 @@ $(document).ready(function(){
 		//console.log(clickIcon);
 		db.transaction(function(tx) {
 			// tx.executeSql('drop table if exists ACTION'); // DB 초기화
-			tx.executeSql('INSERT or REPLACE into ICONLIST (ICON_NAME, CLASS_NAME) VALUES ("lastclick", ?)', [clickIcon]);
+			tx.executeSql('INSERT or REPLACE into ACTION (ICON_NAME, CLASS_NAME) VALUES ("lastclick", ?)', [clickIcon]);
 		});
 		
 		
@@ -72,8 +75,10 @@ $(document).ready(function(){
 		
 	});
 	
-	
 });
+
+
+
 function callJS(arg) {
 	document.getElementById("replaceme").innerHTML = arg;
 }
@@ -89,7 +94,6 @@ function show() {
 		document.getElementById("aaa").innerHTML = "dd";
 	}, 3000);
 }
-
 
 //=====================================================================
 //드롭
@@ -108,10 +112,9 @@ function dragdrop_drop() {
 			lastIcon = lastDragger.children('i');
 		}
 		
-		
 		/* 타이머 */
 	      db.transaction(function(tx){
-	        tx.executeSql('SELECT * FROM ICONLIST', [], function(tx, rs){
+	        tx.executeSql('SELECT * FROM ACTION', [], function(tx, rs){
 	        	
 	        	var dragIcon = lastIcon.context.className;
 	        	for(var i=0;i<35;i++) {
@@ -120,7 +123,8 @@ function dragdrop_drop() {
 	        		
 	        		if(dragIcon == iconsName) {
 	        			minute = rs.rows.item(i).TIMER_VAL;
-	        			console.log(minute);
+	        			defaultValue = rs.rows.item(i).TIMER_VAL;
+	        			console.log(defaultValue);
 	        			
 	        			end = 0;
 	        			timeclock();	
@@ -129,8 +133,7 @@ function dragdrop_drop() {
 	        });
 	    });
 	
-	/* ------ */
-		
+	    /* ------ */
 		
 		showAction(0);		// 아이콘 배치, 타이머 출력
 		
@@ -197,7 +200,7 @@ function loadMainIcon(){
 	var iconDiv = $("#iconMainDiv .drag");
 	console.log("Load DB - data (selectedIcon)");
 	db.transaction(function(tx){
-		tx.executeSql('SELECT * FROM ICONLIST', [], function(tx, res){
+		tx.executeSql('SELECT * FROM ACTION', [], function(tx, res){
 			for( var i=0 ; i < res.rows.length ; i++){
 				var row = res.rows.item(i);
 				if (row.POSITION > 0) {
@@ -205,12 +208,12 @@ function loadMainIcon(){
 				}
 			}
 			
-			// ACTION 실행중이면
+			// LOG 실행중이면
 			if (lastRow != 'none') {
 				if (lastRow.END_TIME == null) {
 					lastIcon = $('[data-name="'+lastRow.TITLE+'"]');
 					lastDragger = lastIcon.parent('div');
-					lastWhile = new Date() - new Date(lastRow.WHILE);
+					lastWhile = new Date() - new Date(lastRow.DURATION);
 					showAction(lastWhile);
 				}
 			}
@@ -222,7 +225,7 @@ function loadMainIcon(){
 //마지막 INSERT row 얻기
 function db_selectLastRow() {
 	db.transaction(function(tx) {
-		tx.executeSql('SELECT * FROM ACTION ORDER BY ID DESC', [], function(tx, res){
+		tx.executeSql('SELECT * FROM LOG ORDER BY ID DESC', [], function(tx, res){
 			if (res.rows.length != 0) {
 				lastRow = res.rows.item(0);
 				console.log(lastRow);
@@ -233,26 +236,26 @@ function db_selectLastRow() {
 	}, db_errorCB);
 }
 
-// ACTION 시작시 쿼리
+// LOG 시작시 쿼리
 function db_startQuery() {
 	db.transaction(function(tx) {
-		tx.executeSql('INSERT INTO ACTION (TITLE, CLASSNAME, START_TIME, WHILE) VALUES (?,?,?,?)', 
+		tx.executeSql('INSERT INTO LOG (TITLE, CLASSNAME, START_TIME, DURATION) VALUES (?,?,?,?)', 
 				[actionName, className, localISOString(startTime), startTime], function(tx, res) {
-			tx.executeSql('SELECT * FROM ACTION');
+			tx.executeSql('SELECT * FROM LOG');
 		});
 	}, db_errorCB);
 }
 
 
 
-// ACTION 종료 쿼리
+// LOG 종료 쿼리
 function db_endQuery() {
 	db_selectLastRow(); 		// 마지막 행 얻기
 	db.transaction(function(tx) {
-		startTime = new Date(lastRow.WHILE);
+		startTime = new Date(lastRow.DURATION);
 		resultWhile = Math.floor((endTime - startTime) / 1000);
 		
-		tx.executeSql('UPDATE ACTION SET END_TIME=?, WHILE=? WHERE ID=?', [localISOString(endTime), resultWhile, lastRow.ID]);
+		tx.executeSql('UPDATE LOG SET END_TIME=?, DURATION=? WHERE ID=?', [localISOString(endTime), resultWhile, lastRow.ID]);
 	}, db_errorCB);
 }
 
@@ -384,7 +387,7 @@ function no() {
 	minute = defaultValue;
 	end = 0;    	
 	clearTimeout(timeClock);
-  timeclock();
+   timeclock();
 }
 
 
@@ -399,6 +402,3 @@ function showConfirm() {
         ['계속','중지']         // buttonLabels
     );
 }
-
-
-
