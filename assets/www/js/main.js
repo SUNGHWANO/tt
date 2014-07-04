@@ -9,7 +9,7 @@ end=0;
 var icons;
 var defaultValue;
 var iconsName;
-var clickIcon;
+var iconClick = 0;
 
 var dbLoad, iconName, defaultTime;
 /* ------- */
@@ -34,6 +34,7 @@ $(document).ready(function(){
 	
 	$('#middle').mouseup(function(){ // 미들 클릭시 초기화
 		dragdrop_timerCheck();
+		iconClick = 0;
 		
 		/* 타이머 초기화 */
 		
@@ -60,6 +61,9 @@ $(document).ready(function(){
 	
 	
 	$(".drag").click(function(){
+		
+		if(iconClick == 0) {
+			
 		console.log(this);
 		
 		clickIcon = $(this).find('i')[0].className;
@@ -73,6 +77,7 @@ $(document).ready(function(){
 			location.href = "functionEdit_sql.html";
 		}, 2);
 		
+		}
 	});
 	
 	
@@ -102,7 +107,7 @@ function show() {
 function dragdrop_drop() {
 	$('#start').droppable({tolerance: 'touch'}, {accept: '.drag'}, {drop: function(event, ui){
 		dragdrop_timerCheck(); // 이미 실행중인지 확인 후 초기화
-		
+		iconClick = 1;
 		// 드래그 대상 관련
 		// 가끔 드래그 대상이 div로 인식되는 버그 대응 
 		if (event.toElement.tagName == "I") {

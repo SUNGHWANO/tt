@@ -19,7 +19,7 @@ public class Splash extends Activity{
 	            public void run() {
 	                finish();       // 3 초후 이미지를 닫아버림
 	            }
-	        }, 2000);		
+	        }, 3000);		
 	}
 
 
