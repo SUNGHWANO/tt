@@ -34,6 +34,7 @@ $(document).ready(function(){
 	
 	$('#middle').mouseup(function(){ // 미들 클릭시 초기화
 		dragdrop_timerCheck();
+		location.href="#";
 		iconClick = 0;
 		
 		/* 타이머 초기화 */
