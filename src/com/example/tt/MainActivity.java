@@ -93,6 +93,7 @@ public class MainActivity extends ActionBarActivity {
 		  				//Toast.makeText(MainActivity.this, "ㅇㅇ", Toast.LENGTH_LONG).show();
 		  				//webView.loadUrl("javascript:alert('dd')");
 		  				//webView.loadUrl("javascript:callJS('확```````````')");
+		  				notimng.cancel(0);
 		  				webView.loadUrl("javascript:yes()");
 		  				
 		  			}
@@ -102,6 +103,7 @@ public class MainActivity extends ActionBarActivity {
 		       	//Toast.makeText(MainActivity.this, "ㄴㄴ", Toast.LENGTH_LONG).show();
 		      	
 		      		//webView.loadUrl("javascript:callJS('취````````````````')");
+		       	notimng.cancel(0);
 		      		webView.loadUrl("javascript:no()");
 		        }
 		      }).create();
@@ -128,13 +130,13 @@ public class MainActivity extends ActionBarActivity {
     case KeyEvent.KEYCODE_BACK:
      String alertTitle = getResources().getString(R.string.app_name);
      String buttonMessage = getResources().getString(R.string.action_settings);
-     String buttonYes = getResources().getString(R.string.action_settings);
-     String buttonNo = getResources().getString(R.string.action_settings);
+     String buttonYes = "종료";
+     String buttonNo = "취소";
        
      new AlertDialog.Builder(MainActivity.this)
      .setIcon(R.drawable.ic_launcher)
      .setTitle("제목")
-     .setMessage("내용")
+     .setMessage("어플을 종료하시겠습니까?")
      .setPositiveButton(buttonYes, new DialogInterface.OnClickListener() {
      
       @Override
@@ -150,6 +152,7 @@ public class MainActivity extends ActionBarActivity {
      .show();
     }
    return true;
+   
    }
 
 }
