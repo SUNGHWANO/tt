@@ -15,14 +15,12 @@ import android.os.Vibrator;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.Window;
 import android.webkit.JsResult;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,15 +36,17 @@ public class MainActivity extends ActionBarActivity {
 	private WebView webView;
 	private TextView textView;
 	private NotificationManager notimng;
-	Button buttonForCall = null;
-	Button buttonForClear = null;
+
 	
+	private final long	FINSH_INTERVAL_TIME    = 2000;
+  private long		backPressedTime        = 0;
 	
 	
 	@SuppressLint("JavascriptInterface")
   @Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
 		
 		startActivity(new Intent(this,Splash.class));
 		
@@ -105,9 +105,7 @@ public class MainActivity extends ActionBarActivity {
 		    	.setPositiveButton("확인", new DialogInterface.OnClickListener() {	
 		  			@Override
 		  			public void onClick(DialogInterface dialog, int which) {
-		  				//Toast.makeText(MainActivity.this, "ㅇㅇ", Toast.LENGTH_LONG).show();
-		  				//webView.loadUrl("javascript:alert('dd')");
-		  				//webView.loadUrl("javascript:callJS('확```````````')");
+		  				
 		  				notimng.cancel(0);
 		  				webView.loadUrl("javascript:no()");
 		  				
@@ -115,9 +113,7 @@ public class MainActivity extends ActionBarActivity {
 		  		}).setNegativeButton("취소", new DialogInterface.OnClickListener() {
 		      @Override
 		      public void onClick(DialogInterface dialog, int which) {
-		       	//Toast.makeText(MainActivity.this, "ㄴㄴ", Toast.LENGTH_LONG).show();
-		      	
-		      		//webView.loadUrl("javascript:callJS('취````````````````')");
+		       
 		       	notimng.cancel(0);
 		      		webView.loadUrl("javascript:yes()");
 		        }
@@ -137,37 +133,22 @@ public class MainActivity extends ActionBarActivity {
 
 	
 }
-	public boolean onKeyDown(int keyCode, KeyEvent event){
-		
-		
-		
-    switch(keyCode){
-    case KeyEvent.KEYCODE_BACK:
-     String alertTitle = getResources().getString(R.string.app_name);
-     String buttonMessage = getResources().getString(R.string.action_settings);
-     String buttonYes = "종료";
-     String buttonNo = "취소";
-       
-     new AlertDialog.Builder(MainActivity.this)
-     .setIcon(R.drawable.ic_launcher)
-     .setTitle("제목")
-     .setMessage("어플을 종료하시겠습니까?")
-     .setPositiveButton(buttonYes, new DialogInterface.OnClickListener() {
-     
-      @Override
-      public void onClick(DialogInterface dialog, int which) {
-       // TODO Auto-generated method stub
-      	 notimng.cancel(0);
-       moveTaskToBack(true);
-       finish();
-       android.os.Process.killProcess(android.os.Process.myPid());
-      }
-     })
-     .setNegativeButton(buttonNo, null)
-     .show();
-    }
-   return true;
-  
-   }
-
+	
+	
+	
+	
+	 @Override 
+	      public void onBackPressed() {
+	          long tempTime        = System.currentTimeMillis();
+	          long intervalTime    = tempTime - backPressedTime;
+	   
+	          if ( 0 <= intervalTime && FINSH_INTERVAL_TIME >= intervalTime ) {
+	              super.onBackPressed(); 
+	              System.exit(0);
+	          } else { 
+	              backPressedTime = tempTime; 
+	              Toast.makeText(getApplicationContext(),"'뒤로'버튼을한번더누르시면종료됩니다.",Toast.LENGTH_SHORT).show(); 
+	          } 
+	      } 
+	
 }

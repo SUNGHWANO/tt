@@ -42,6 +42,7 @@ $(document).ready(function(){
 		/* ---- */
 	});
 	
+	
 	$("#resultLink").click(function(){
 		db.transaction(function(tx){
 			tx.executeSql('SELECT * FROM LOG',[],function(tx,res){
@@ -56,9 +57,10 @@ $(document).ready(function(){
 		});
 	});
 	
+	
+	
 	$(".drag").click(function(){
 		console.log(this);
-		
 		
 		clickIcon = $(this).find('i')[0].className;
 		//console.log(clickIcon);
@@ -67,13 +69,13 @@ $(document).ready(function(){
 			tx.executeSql('INSERT or REPLACE into ACTION (ICON_NAME, CLASS_NAME) VALUES ("lastclick", ?)', [clickIcon]);
 		});
 		
-		
-	
 		setInterval(function(){
 			location.href = "functionEdit_sql.html";
 		}, 2);
 		
 	});
+	
+	
 	
 });
 
