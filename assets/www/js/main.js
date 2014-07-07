@@ -50,8 +50,8 @@ $(document).ready(function(){
 	});
 	
 	$('#middle').mouseup(function(){ // 미들 클릭시 초기화
-		iconClick = 0;
 		dragdrop_timerCheck();
+		iconClick = 0;
 		
 		/* 타이머 초기화 */
 		
@@ -78,36 +78,23 @@ $(document).ready(function(){
 			location.href = "functionEdit_sql.html";
 		}, 2);
 		
-		}else{
+		}
+		/*
+		else{
 			location.href="#";	
 			iconClick(0);
 		}
 		
 		iconClick = 1;
-		
+		*/
 	});
+
 	
 	
 	
 });
 
 
-
-function callJS(arg) {
-	document.getElementById("replaceme").innerHTML = arg;
-}
-
-function clear() {
-	document.getElementById("replaceme").innerHTML = "";
-}
-
-function show() {
-	setTimeout(function(){		
-		window.alert();
-		AppInterface2.toast();
-		document.getElementById("aaa").innerHTML = "dd";
-	}, 3000);
-}
 
 //=====================================================================
 //드롭
@@ -348,7 +335,17 @@ function timeclock(){
 }
 
 
+function yes() {
+	window.location.reload();
+}
 
+function no() {
+	second = 0;
+	minute = defaultValue;
+	end = 0;    	
+	clearTimeout(timeClock);
+   timeclock();
+}
 
 
 
@@ -395,18 +392,6 @@ function onConfirm(buttonIndex) {
     }
 }
 
-
-function yes() {
-	//window.location.reload();
-}
-
-function no() {
-	second = 0;
-	minute = defaultValue;
-	end = 0;    	
-	clearTimeout(timeClock);
-   timeclock();
-}
 
 
 
