@@ -48,20 +48,8 @@ $(document).ready(function(){
 			});
 		});
 	});
-	
-	$('#middle').mouseup(function(){ // 미들 클릭시 초기화
-		dragdrop_timerCheck();
-		iconClick = 0;
-		
-		/* 타이머 초기화 */
-		
-		clearTimeout(timeClock);
-		
-		/* ---- */
-	});
-	
-	
-	var aaa = $(".drag").click(function(){
+
+		$(".drag").click(function(){
 		
 		if(iconClick == 0) {
 			
@@ -78,17 +66,39 @@ $(document).ready(function(){
 			location.href = "functionEdit_sql.html";
 		}, 2);
 		
+		}else{
+			
 		}
-		/*
-		else{
+		
+	/*	else{
 			location.href="#";	
 			iconClick(0);
 		}
 		
-		iconClick = 1;
-		*/
+		iconClick = 1;*/
+		
 	});
 
+	
+	
+	$('#middle').mouseup(function(){ // 미들 클릭시 초기화
+		dragdrop_timerCheck();
+		iconClick = 1;
+		
+		
+		/* 타이머 초기화 */
+		
+		clearTimeout(timeClock);
+		
+		/* ---- */
+		
+		
+		
+	});
+
+	
+	
+	
 	
 	
 	
