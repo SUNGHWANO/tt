@@ -32,17 +32,7 @@ $(document).ready(function(){
 	dragdrop_doing();
 	dragdrop_drop();
 	
-	$('#middle').mouseup(function(){ // 미들 클릭시 초기화
-		dragdrop_timerCheck();
-		location.href="#";
-		iconClick = 0;
-		
-		/* 타이머 초기화 */
-		
-		clearTimeout(timeClock);
-		
-		/* ---- */
-	});
+	
 	
 	
 	$("#resultLink").click(function(){
@@ -59,9 +49,19 @@ $(document).ready(function(){
 		});
 	});
 	
+	$('#middle').mouseup(function(){ // 미들 클릭시 초기화
+		dragdrop_timerCheck();
+		iconClick = 0;
+		
+		/* 타이머 초기화 */
+		
+		clearTimeout(timeClock);
+		
+		/* ---- */
+	});
 	
 	
-	$(".drag").click(function(){
+	var aaa = $(".drag").click(function(){
 		
 		if(iconClick == 0) {
 			
@@ -78,7 +78,13 @@ $(document).ready(function(){
 			location.href = "functionEdit_sql.html";
 		}, 2);
 		
+		}else{
+			location.href="#";	
+			iconClick(0);
 		}
+		
+		iconClick = 1;
+		
 	});
 	
 	
