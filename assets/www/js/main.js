@@ -50,8 +50,8 @@ $(document).ready(function(){
 	});
 	
 	$('#middle').mouseup(function(){ // 미들 클릭시 초기화
-		dragdrop_timerCheck();
 		iconClick = 0;
+		dragdrop_timerCheck();
 		
 		/* 타이머 초기화 */
 		
@@ -348,24 +348,14 @@ function timeclock(){
 }
 
 
-function yes() {
-	//window.location.reload();
-}
-
-function no() {
-	second = 0;
-	minute = defaultValue;
-	end = 0;    	
-	clearTimeout(timeClock);
-   timeclock();
-}
 
 
 
 
 
 
-/*
+
+
 document.addEventListener("deviceready", onDeviceReady, false);
 
 
@@ -406,6 +396,18 @@ function onConfirm(buttonIndex) {
 }
 
 
+function yes() {
+	//window.location.reload();
+}
+
+function no() {
+	second = 0;
+	minute = defaultValue;
+	end = 0;    	
+	clearTimeout(timeClock);
+   timeclock();
+}
+
 
 
 // Show a custom confirmation dialog
@@ -419,4 +421,3 @@ function showConfirm() {
         ['계속','중지']         // buttonLabels
     );
 }
-*/
